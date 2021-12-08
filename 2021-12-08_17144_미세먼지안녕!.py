@@ -20,8 +20,11 @@ for r in range(R):
         board[below][0]=0
         break
 
-newboard = [board[r][:] for r in range(R)]
-   
+newboard = [board[r][:] for r in range(R)] 
+'''
+# 같은 t초에 확산되는 것이기 때문에 newboard에 값 옮겨놔야함
+# 안그러면 for문 돌면서 초기 board값이 아닌 값이 k값이 됨
+'''
 dx = [0,0,1,-1]
 dy = [1,-1,0,0]
 for t in range(T):
@@ -30,7 +33,7 @@ for t in range(T):
     for r in range(R):
         for c in range(C):
             if (r==above and c==0) or (r==below and c==0): continue
-            k = board[r][c]//5
+            k = board[r][c]//5 
             for dir in range(4):
                 nx = r+dx[dir]
                 ny = c+dy[dir]
