@@ -1,5 +1,4 @@
 # 1시간 3분 
-# board에 갱신하지 말고 sharks 배열에 저장했다가 한꺼번에 확인하는 게 좋을듯
 import sys
 input = sys.stdin.readline
 
@@ -37,7 +36,7 @@ for king in range(C):
     
     # 3.move
     newsharks = []
-    for shark in sharks:
+    for shark in sharks: # for r in range(R): for c in range(C) 쓰지 말기!!
         r,c,s,d,z = shark  
         remain = s
         nr = r+dx[d]*s
@@ -47,17 +46,17 @@ for king in range(C):
                 remain -= r
                 r = 0
                 d += 1 #북->남
-            elif nr>=R: # 남
+            elif nr>=R: # 남으로 벗어남
                 remain -= (R-1-r)
                 r = R-1
                 d -= 1 #남->북
             nr = r+dx[d]*remain 
         while nc<0 or nc>=C:
-            if nc<0: # 서
+            if nc<0: # 서쪽으로 벗어남
                 remain -= c
                 c = 0
                 d -= 1 #서->동
-            elif nc>=C: # 동
+            elif nc>=C: # 동쪽으로 벗어남
                 remain -=(C-1-c)
                 c = C-1
                 d += 1
@@ -65,11 +64,11 @@ for king in range(C):
         newsharks.append((nr,nc,s,d,z))
     
     board = [[[] for _ in range(C)] for _ in range(R)] #######
-    newsharks = sorted(newsharks, key = lambda x: -x[4]) #크기가 큰 순으로 정렬
+    newsharks = sorted(newsharks, key = lambda x: -x[4]) # 크기가 큰 순으로 정렬
     alivesharks = []
     for newshark in newsharks:
         nr,nc,s,d,z = newshark
-        if len(board[nr][nc])==0:
+        if len(board[nr][nc])==0: # 크기가 큰 순으로 정렬했으니까 board에 이미 상어가 있으면 아무것도 할 필요없음
             board[nr][nc].append((s,d,z))
             alivesharks.append((nr,nc,s,d,z))
             
