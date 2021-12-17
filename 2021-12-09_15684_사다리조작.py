@@ -4,9 +4,6 @@ import sys
 from itertools import combinations
 input = sys.stdin.readline
 
-# 세로선, 가로선, 세로선마다 가로선 놓을 수 있는 위치 개수
-# 2 ≤ N ≤ 10, 0 ≤ M ≤ (N-1)×H, 1 ≤ H ≤ 30
-
 N,M,H = map(int,input().split()) 
 
 graph = [[False]*N for _ in range(H)] #(h,n) 
