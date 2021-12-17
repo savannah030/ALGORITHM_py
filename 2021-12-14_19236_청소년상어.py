@@ -1,6 +1,5 @@
-# 2시간 반?+46분
-# 1. 50 2. keyError(line 81 del newpos[eatten[0]]) 3. 35 4. 19
-# https://hello-i-t.tistory.com/56
+# dfs 함수 진입했을 때 물고기 먹으면 진입 전후로 board 상태 되돌릴 필요없음
+# board, pos 다 deepcopy하기 때문에 dfs문 서로에게 영향주지않음
 import sys
 input = sys.stdin.readline
 from copy import deepcopy
@@ -20,7 +19,7 @@ dy = [0,-1,-1,-1,0,1,1,1]
 def fishMove(board,pos):
     nums = sorted(pos.keys())
     for n in nums: 
-        if n==99: break ###########3
+        #if n==99: break ###########
         x,y = pos.get(n)   
         d = board[x][y][1]
         # 이동할 수 있는 칸을 향할 때까지 방향을 45도 반시계 회전
@@ -41,19 +40,45 @@ def fishMove(board,pos):
             board[x][y],board[nx][ny] = board[nx][ny],board[x][y] 
     return board,pos
 
+def fishMove2(_board,_info):
+  
+    nums = sorted(_info.keys())
+    for n in nums:
+        #if n==99: break
+        x,y = _info[n]
+        dir = _board[x][y][1]
+        for i in range(8):
+            ndir = (dir+i)%8
+            nx,ny = x+dx[ndir],y+dy[ndir]
+            if nx<0 or nx>=4 or ny<0 or ny>=4: continue
+
+            if _board[nx][ny][0]!=99: 
+                _board[x][y][1]=ndir
+                _info[n]=(nx,ny)
+                if _board[nx][ny][0]!=-1:
+                    _info[_board[nx][ny][0]]=(x,y)
+                _board[x][y],_board[nx][ny] = _board[nx][ny],_board[x][y]
+                break  
+        else:
+            _board[x][y][1] = dir
+            
+      
+    return _board,_info
+
 def dfs(r,c,cnt,board,pos): 
     
     global ans
     # 상어가 (r,c) 물고기 먹음
+    # # dfs 함수 진입했을 때 물고기 먹으면 진입 전후로 board 상태 되돌릴 필요없음
     eatten = board[r][c][:]
     cnt += board[r][c][0]
     del pos[eatten[0]] 
     board[r][c] = [99,eatten[1]]
-
-    # fish move
-    newboard,newpos = fishMove(board,pos) 
     
     ans = max(ans,cnt) ##########
+
+    # fish move
+    newboard,newpos = fishMove2(board,pos) 
     
     # shark moves
     d = newboard[r][c][1]
@@ -64,7 +89,8 @@ def dfs(r,c,cnt,board,pos):
         if nr<0 or nr>=4 or nc<0 or nc>=4: break
         
         if newboard[nr][nc][0]!=-1: ##### 갈곳이 없으면 재귀 끝 !
-            newboard[r][c]=[-1,-1]
+            newboard[r][c]=[-1,-1]  # 상어가 있던 자리 비우기
+            # board, pos 다 deepcopy하기 때문에 dfs문 서로에게 영향주지않음
             dfs(nr,nc,cnt,deepcopy(newboard),deepcopy(newpos))
  
 ans = 0
