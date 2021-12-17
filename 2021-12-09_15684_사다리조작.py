@@ -15,17 +15,14 @@ for _ in range(M):
     a,b =  map(int,input().split()) # b번 세로선과 b+1번 세로선을 a번 점선 위치에서 연결했다는 의미
     graph[a-1][b-1]=True
     old.append((a-1,b-1))
-
+    
 cand = []  
 for i in range(H):
     for j in range(N-1): #### 마지막 세로선에서 오른쪽으로 뻗을 수 있는 가로선은 없음
         if graph[i][j]: continue
+        if j==0 and graph[i][j+1]: continue
+        if 0<j<N-1 and graph[i][j-1] and graph[i][j+1]: continue
         cand.append((i,j))
-
-def able(pos):
-    for (x,y) in pos:
-        if (x,y+1) in pos or (x,y-1) in pos: return False # (x,y+1) or (x,y-1) in pos 로 쓰지 않도록 주의!
-    return True
 
 def start():
     for y in range(N):
@@ -38,18 +35,15 @@ def start():
         if now!=y: return False
     return True
 
-def find():
-    for n in range(4):
-        for ladders in combinations(cand,n): #ladders(이번 for문에서 사다리를 놓을 위치) #ladders= [(3, 2), (5, 2), (5, 4)]
-            if not able(old+list(ladders)): continue # 사다리를 놓을 수 없으면 
-            for (x,y) in ladders:            
-                graph[x][y]=True
-            if start():
-                return len(ladders)
-            for (x,y) in ladders:
-                graph[x][y]=False #백트래킹
-    return -1
-
-print(find())
+for n in range(4):
+    for ladders in combinations(cand,n): #ladders(이번 for문에서 사다리를 놓을 위치) #ladders= [(3, 2), (5, 2), (5, 4)] 
+        for (x,y) in ladders:            
+            graph[x][y]=True
+        if start():
+            print(len(ladders))
+            sys.exit(0)
+        for (x,y) in ladders:
+            graph[x][y]=False #백트래킹
+print(-1)
 
     
