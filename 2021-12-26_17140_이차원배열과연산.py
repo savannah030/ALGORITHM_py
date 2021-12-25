@@ -46,19 +46,15 @@ while time<=100:
             
     else: 
         # C 연산 (배열 90도 회전해서 calculate함수 쓴다음에 다시 되돌리는 방법 사용)
-        A_rotate = [ [-1]*len(A) for _ in range(len(A[0]))]
-        for x in range(len(A_rotate)):
-            for y in range(len(A_rotate[0])):
-                A_rotate[x][y] = A[y][x]
-       
+        A_rotate = zip(*A)
+        A_rotate = [list(a_r) for a_r in A_rotate]
+        
         A = calculate(A_rotate)
         
         ## 다시 원래대로 되돌리기
-        A_rotate = [ [-1]*len(A) for _ in range(len(A[0]))]
-        for x in range(len(A_rotate)):
-            for y in range(len(A_rotate[0])):
-                A_rotate[x][y] = A[y][x]
-        
+        A_rotate = zip(*A)
+        A_rotate = [list(a_r) for a_r in A_rotate]
+    
         # A = deepcopy(A_rotate)
         A = []       
         A = [A_rotate[i][:] for i in range(len(A_rotate))]
