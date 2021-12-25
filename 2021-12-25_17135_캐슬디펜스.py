@@ -27,6 +27,23 @@ for combi in combinations(li,3):
         
         # 공격대상 정하기
         targets = set()
+        for i in range(3): 
+            dis = D ############
+            cands = []
+            for enemy in enemys:
+                tmp = abs(enemy[0]-archers[i][0])+abs(enemy[1]-archers[i][1])
+                if tmp<=dis:
+                    if tmp<dis: 
+                        cands = []
+                        dis = tmp
+                    cands.append((enemy[0],enemy[1]))
+            if len(cands)>0:
+                target = sorted(cands, key=lambda x:x[1])[0] # 제일 왼쪽에 있는 적 공격
+                targets.add(target)
+        
+        '''
+        # 공격대상 정하기
+        targets = set()
         for i in range(3):
             CAL = lambda x: abs(x[0]-archers[i][0])+abs(x[1]-archers[i][1]) ### 공격거리 구하는 람다함수
             enemys = sorted(enemys, key=lambda x: CAL(x) ) 
@@ -36,6 +53,7 @@ for combi in combinations(li,3):
                 if len(cands)>0:
                     target = sorted(cands, key=lambda x:x[1])[0] # 제일 왼쪽에 있는 적 공격
                     targets.add(target)
+        '''
         
         # 공격
         cnt += len(targets)
