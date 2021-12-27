@@ -10,7 +10,7 @@ for _ in range(3):
     A.append(list(map(int,input().split())))
     
 def calculate(board):
-    MAX = 0
+    MAXLEN = 0 # 2차원 배열 board에서 가장 길이가 긴 배열의 길이
     for x in range(len(board)):
         freq = [0]*(max(board[x])+1)
         for y in range(len(board[x])):
@@ -23,12 +23,12 @@ def calculate(board):
         li = []
         for t in tmp:
             li += [t[0],t[1]]
-        MAX = max(len(li),MAX)
-        board[x] = li[:100] # 처음 100개를 제외한 나머지는 버린다
+        MAXLEN = max(len(li),MAXLEN) # 한 줄 확인할때마다 MAXLEN 갱신
+        board[x] = li[:100] # 처음 100개를 제외한 나머지는 버린다(li 길이가 100 미만인 경우는 그대로)
         
-    if MAX>100: MAX=100
+    if MAXLEN>100: MAXLEN=100
     for x in range(len(board)):
-        board[x] += [0]*(MAX-len(board[x]))
+        board[x] += [0]*(MAXLEN-len(board[x]))
         
     return board
     
