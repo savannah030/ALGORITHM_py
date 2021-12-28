@@ -82,7 +82,6 @@ def dfs(r,c,cnt,board,pos):
     
     # shark moves
     d = newboard[r][c][1]
-    flag = False
     for n in range(1,4):
         nr = r+dx[d]*n
         nc = c+dy[d]*n
