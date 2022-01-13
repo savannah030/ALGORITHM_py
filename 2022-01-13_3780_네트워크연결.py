@@ -1,3 +1,6 @@
+# I 명령어일때는 dist 초기값만 설정해주고(dist[i] = abs(i-j)%1000)
+# E 명령어일때 find_parent함수에서 dist 갱신해줘야함!
+
 import sys
 input = sys.stdin.readline
      
