@@ -1,5 +1,8 @@
 from collections import deque
 
+## (x,y)의 x,y가 모두 0 이상이도록 보정해야함
+## 반복되는 코드 함수로 만들어서 줄이기
+
 def solution(game_board, table):
     l1 = len(game_board)
     l2 = len(table)
@@ -35,14 +38,12 @@ def solution(game_board, table):
     for i in range(l2):
         for j in range(l2):
             if table[i][j]:
-                tempblocks.append(bfs(i,j)) # 18분
-    #print("tempblocks=",tempblocks)   
+                tempblocks.append(bfs(i,j)) 
     for tempblock in tempblocks:
         MIN_x, MIN_y = min(tb[0] for tb in tempblock),min(tb[1] for tb in tempblock)
         newblock = [ (tb[0]-MIN_x,tb[1]-MIN_y) for tb in tempblock ]
         rotated_blocks[0].append(newblock)
-    #print("hi",rotated_blocks)
-    
+
     
     used = [False]*len(rotated_blocks[0]) # 블록 썼으면 True, 아직 안썼으면 False
 
@@ -52,22 +53,15 @@ def solution(game_board, table):
             tempblock = []
             newblock = []
             for (x,y) in block:
-                tempblock.append((y,-x)) # 32분
+                tempblock.append((y,-x)) 
             ##### TODO: newblock의 (x,y)가 모두 양수이도록 고치기
             MIN_x, MIN_y = min(tb[0] for tb in tempblock),min(tb[1] for tb in tempblock)
             newblock = [ (tb[0]-MIN_x,tb[1]-MIN_y) for tb in tempblock ]
             rotated_blocks[r+1].append(newblock)
-      
-    '''  
-    for i in range(len(rotated_blocks)): # 42분
+    '''
+    for i in range(len(rotated_blocks)): 
         print(i, rotated_blocks[i])
-    <보정전>
-    0 [[(0, 0), (1, 0)], [(0, 0), (0, 1), (1, 1), (2, 1), (2, 2)], [(0, 0), (1, 0), (1, -1), (2, 0)], [(0, 0), (0, 1), (1, 1)], [(0, 0), (0, 1)]]
-    1 [[(0, 0), (0, -1)], [(0, 0), (1, 0), (1, -1), (1, -2), (2, -2)], [(0, 0), (0, -1), (-1, -1), (0, -2)], [(0, 0), (1, 0), (1, -1)], [(0, 0), (1, 0)]]
-    2 [[(0, 0), (-1, 0)], [(0, 0), (0, -1), (-1, -1), (-2, -1), (-2, -2)], [(0, 0), (-1, 0), (-1, 1), (-2, 0)], [(0, 0), (0, -1), (-1, -1)], [(0, 0), (0, -1)]]
-    3 [[(0, 0), (0, 1)], [(0, 0), (-1, 0), (-1, 1), (-1, 2), (-2, 2)], [(0, 0), (0, 1), (1, 1), (0, 2)], [(0, 0), (-1, 0), (-1, 1)], [(0, 0), (-1, 0)]]
-    <보정후>
-    0 [[(0, 0), (1, 0)], [(0, 0), (0, 1), (1, 1), (2, 1), (2, 2)], [(0, 0), (1, 0), (1, -1), (2, 0)], [(0, 0), (0, 1), (1, 1)], [(0, 0), (0, 1)]]
+    0 [[(0, 0), (1, 0)], [(0, 0), (0, 1), (1, 1), (2, 1), (2, 2)], [(0, 1), (1, 1), (1, 0), (2, 1)], [(0, 0), (0, 1), (1, 1)], [(0, 0), (0, 1)]]
     1 [[(0, 1), (0, 0)], [(0, 2), (1, 2), (1, 1), (1, 0), (2, 0)], [(1, 2), (1, 1), (0, 1), (1, 0)], [(0, 1), (1, 1), (1, 0)], [(0, 0), (1, 0)]]
     2 [[(1, 0), (0, 0)], [(2, 2), (2, 1), (1, 1), (0, 1), (0, 0)], [(2, 0), (1, 0), (1, 1), (0, 0)], [(1, 1), (1, 0), (0, 0)], [(0, 1), (0, 0)]]
     3 [[(0, 0), (0, 1)], [(2, 0), (1, 0), (1, 1), (1, 2), (0, 2)], [(0, 0), (0, 1), (1, 1), (0, 2)], [(1, 0), (0, 0), (0, 1)], [(1, 0), (0, 0)]]
@@ -94,42 +88,46 @@ def solution(game_board, table):
                 
         return pos
     
-    blanks = []
+    tempblanks = []
+    newblanks = []
     for x in range(l1):
         for y in range(l1):
             if not game_board[x][y]: #빈칸이면
-                blanks.append(findBlanks(x,y))
-
-    # print("blanks",blanks)
-    '''
-    0 2 [(0, 0), (0, 1), (1, 1), (2, 1), (2, 2)]
-    0 5 [(0, 0), (1, 0)]
-    1 0 [(0, 0), (0, 1), (1, 0)]
-    3 2 [(0, 0), (1, 0), (1, 1), (1, -1)]
-    4 5 [(0, 0), (1, 0), (1, -1)]
-    5 0 [(0, 0)]
-    '''
-    
+                tempblanks.append(findBlanks(x,y))
+    for tempblank in tempblanks:
+            MIN_x, MIN_y = min(tb[0] for tb in tempblank),min(tb[1] for tb in tempblank)
+            newblank= [ (tb[0]-MIN_x,tb[1]-MIN_y) for tb in tempblank ]
+            newblanks.append(newblank)
+    print("newblanks=",newblanks)
+    # [[(0, 0), (0, 1), (1, 1), (2, 1), (2, 2)], [(0, 0), (1, 0)], [(0, 0), (0, 1), (1, 0)], [(0, 0), (1, 0), (1, 1), (1, -1)], [(0, 0), (1, 0), (1, -1)], [(0, 0)]]
+    # newblanks= [[(0, 0), (0, 1), (1, 1), (2, 1), (2, 2)], [(0, 0), (1, 0)], [(0, 0), (0, 1), (1, 0)], [(0, 1), (1, 1), (1, 2), (1, 0)], [(0, 1), (1, 1), (1, 0)], [(0, 0)]]
     def put(_blank):
         print("_blank",_blank)
-        for i in range(4):
-            for j in range(len(rotated_blocks[i])): #for block in rotated_blocks[r]:
-                block = rotated_blocks[i][j]
-                if game_board[_blank[0][0]][_blank[0][1]]: continue # 이미 채워져있으면 근데 코드 좀..... ##############
-                if used[j]: continue
-                if len(_blank)!=len(block): continue
-                if set(_blank)==set(block): ###### 탐색 순서가 다른 경우 좌표가 맞지 않음................ # 1시간 23분
-                    ################## 왜 처음엔 생각 못했을까...........
-                    answer += len(_blank)
+        for dir in range(4):
+            for k in range(len(rotated_blocks[dir])):
+                block = rotated_blocks[dir][k]
+            
+                if used[k]: 
+                    #print(2)
+                    continue
+                if len(_blank)!=len(block): 
+                    #print(3)
+                    continue
+                if set(_blank)==set(block):
                     print(block,_blank)
                     for (x,y) in _blank:
                         game_board[_blank[0][0]+x][_blank[0][1]+y]=1
-                    used[j]=True
-                    return
-                
-    answer = 0 # 총 몇칸을 채울 수 있는지
-    for blank in blanks:
-        put(blank) ## game_board의 각각의 칸에 대하여 table의 조각으로 채움
+                    used[k]=True
+                    return len(_blank)
+        return 0
+                   
+              
+    answer = 0 # 총 몇칸을 채울 수 있는지  
+   
+    for blank in newblanks:
+        k = put(blank)
+        print("k=",k)
+        answer += k ## game_board의 각각의 빈칸에 대하여 table의 조각으로 채움
         
                     
    
