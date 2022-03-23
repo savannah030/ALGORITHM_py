@@ -115,8 +115,6 @@ def solution(game_board, table):
                     continue
                 if set(_blank)==set(block):
                     print(block,_blank)
-                    for (x,y) in _blank:
-                        game_board[_blank[0][0]+x][_blank[0][1]+y]=1
                     used[k]=True
                     return len(_blank)
         return 0
