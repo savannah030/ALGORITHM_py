@@ -3,20 +3,22 @@ input = sys.stdin.readline
 
 N = int(input())
 
-# 에라토스테네스의 체(메모리초과)
-isPrime = [True]*(10**N)
-isPrime[0],isPrime[1]=False,False
-for i in range(2,int(len(isPrime)**0.5)+1):
-    if isPrime[i]:
-        for j in range(i+i,len(isPrime),i): ## 범위조심(i+i부터 False로 바꿔야함)
-            isPrime[j]=False
+# num이 소수인지 판별하는 함수
+def isPrime(num):
+    if num==0 or num==1: return False
+    for i in range(2,int(num**0.5)+1):
+        if num%i==0:
+            return False
+    return True
 
 for num in range(10**(N-1),10**N): # N자리 수 중
-    for idx in range(1,N+1):
-        if not isPrime[int(str(num)[:idx])]:
+    for digit in [10**n for n in range(N)]:
+        k = num//digit
+        if not isPrime(k):
             break
     else:
         print(num)
-        
+
+
             
 
