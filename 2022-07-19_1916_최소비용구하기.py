@@ -20,6 +20,7 @@ def dijkstra(st,en):
 
     while q:
         cost,node = heappop(q)
+        if cost>dist[node]: continue
         if node==en:
             return dist[en]
         for (nxt_cost,nxt_node) in graph[node]:

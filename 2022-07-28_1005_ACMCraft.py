@@ -2,6 +2,7 @@
 # 58%에서 틀렸습니다
 # 각 depth마다 건설 시간이 가장 긴 건물의 건설 시간을 더하는 것이 최소 건설 시간을 보장하지 않음 !!
 # 경로 중 건설시간 가장 긴 거 골라야함 !!
+# https://www.acmicpc.net/board/view/30959 다익스트라는 최장경로에 쓸 수 없음
 
 import sys
 input = sys.stdin.readline
@@ -24,7 +25,9 @@ for _ in range(int(input())): # 테스트케이스 수
             q.append(i) #(node,weight)   
             dp[i]=weight[i]
 
-    while q:
+    while q: 
+        # now는 건설 시작할 수 있는 노드
+        # 그 전 건물들이 모두 지어진 상태
         now = q.popleft()
         for nxt in graph[now]:
             indegree[nxt] -= 1
