@@ -73,4 +73,38 @@ def solution(land, height):
             union_parent(v1,v2)              # 3-3. 최소 신장 트리에 포함
             answer += w
     return answer
+
+
+# 프림 알고리즘..??
+import heapq
+def solution_other(land, height):
+    
+    dx = [0,0,1,-1]
+    dy = [1,-1,0,0]
+    N = len(land)
+    visited = [ [False]*N for _ in range(N)]
+    
+    h=[(0,0,0)]
+    answer = 0
+    while h:
+        cnt,x,y = heapq.heappop(h) 
+        # visited 코드 순서가 평소 내가 쓰던 방식이랑 달라서 헷갈림 ㅠ
+        if visited[x][y]: continue
+        answer += cnt      
+        visited[x][y] = True
+        for dir in range(4):
+            nx,ny = x+dx[dir],y+dy[dir]
+            if nx<0 or nx>=N or ny<0 or ny>=N: continue
+            if not visited[nx][ny]:
+                temp = abs(land[x][y]-land[nx][ny])
+                # height보다 차이가 크다면 그 차이를 넣어줘야함(사다리 건설비용)
+                # height보다 작다면 사다리 건설비용이 들지 않기 때문에 0을 삽입
+                if temp>height:
+                    heapq.heappush(h,(temp,nx,ny))
+                else:
+                    heapq.heappush(h,(0,nx,ny))
+    return answer
+
+solution_other([[1, 4, 8, 10], [5, 5, 5, 5], [10, 10, 10, 10], [10, 10, 10, 20]], 3)
+    
     
